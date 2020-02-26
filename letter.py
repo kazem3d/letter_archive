@@ -15,7 +15,7 @@ curser.execute('''CREATE TABLE IF NOT EXISTS main (
 def get_data(name,receiver):
 
     moment=datetime.now().strftime('%Y-%m-%d %H:%M')
-    if receiver == 'b':
+    if receiver == 'بایگانی':
         curser.execute('INSERT INTO main (name,receiver,moment,archive)  VALUES (?,?,?,?)'    ,(name,receiver,moment,True)    )
         conn.commit()
         
