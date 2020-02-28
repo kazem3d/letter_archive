@@ -7,8 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
-from letter import un_archived,letter_trace,get_data
+from letter import un_archived,letter_trace,get_data,print_Unarchive
 
 
 class Ui_MainWindow(object):
@@ -114,8 +115,17 @@ class Ui_MainWindow(object):
 
     def unArchiced(self):
         z=un_archived()
-        z="---".join(z)
-        self.textBrowser_2.setText(z)
+        
+        l=print_Unarchive(z)
+        print(l)
+        # z="---".join(z)
+        for i in l:
+            
+            self.textBrowser_2.append(i)
+
+    
+      
+        
 
     def traceForm(self):
         letter_name=self.lineEdit_2.text()

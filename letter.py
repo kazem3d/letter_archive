@@ -14,7 +14,7 @@ curser.execute('''CREATE TABLE IF NOT EXISTS main (
 )''')
 def get_data(name,receiver):
 
-    moment=datetime.now().strftime('%Y-%m-%d %H:%M')
+    moment=datetime.now().strftime('%Y-%m-%d    %H:%M')
     if receiver == 'بایگانی':
         curser.execute('INSERT INTO main (name,receiver,moment,archive)  VALUES (?,?,?,?)'    ,(name,receiver,moment,True)    )
         conn.commit()
@@ -67,12 +67,23 @@ def un_archived():
     for x in letters_list:
         if x not in archive_list:
             not_archive.append(x)
-    print(not_archive)
+    
     return not_archive
 
-# name=input('index:')
-# receiver=input('receiver:')
-# get_data()
-#rchived()
-#rcheName=input('index:')
-#r_trace(searcheName)
+
+
+def print_Unarchive(UnArchiveList):
+    not_archive=[]
+    for name in UnArchiveList:
+        
+
+        curser.execute('SELECT name,receiver,moment FROM main where name=%s order by id desc limit 1' %name)
+        row=curser.fetchone()
+        s='-------->'.join(map(str,row))
+        not_archive.append(s)
+        
+      
+        
+    # print(not_archive) 
+    return not_archive       
+        
