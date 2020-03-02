@@ -94,7 +94,7 @@ class Ui_MainWindow(object):
         self.lineEdit.returnPressed.connect(self.record)
         self.pushButton_2.clicked.connect(self.traceForm)
         self.lineEdit_2.returnPressed.connect(self.traceForm)
-
+        # self.unArchiced.processEvents()
 
     def fillCombobox(self):
         recivers=['مدیر','معاون توسعه','معاون راهداری','معاون حمل و نقل',
@@ -114,13 +114,11 @@ class Ui_MainWindow(object):
         
 
     def unArchiced(self):
-        z=un_archived()
-        
-        l=print_Unarchive(z)
-        print(l)
-        # z="---".join(z)
-        for i in l:
-            
+        unArchive_list=un_archived()
+        unArchive_print_list=print_Unarchive(unArchive_list)
+        print(unArchive_print_list)
+
+        for i in unArchive_print_list:
             self.textBrowser_2.append(i)
 
     

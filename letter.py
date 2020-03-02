@@ -67,23 +67,18 @@ def un_archived():
     for x in letters_list:
         if x not in archive_list:
             not_archive.append(x)
-    
     return not_archive
 
 
-
 def print_Unarchive(UnArchiveList):
-    not_archive=[]
+    notArchive_print_list=[]
     for name in UnArchiveList:
-        
 
         curser.execute('SELECT name,receiver,moment FROM main where name=%s order by id desc limit 1' %name)
         row=curser.fetchone()
+        print((row))
         s='-------->'.join(map(str,row))
-        not_archive.append(s)
-        
-      
-        
-    # print(not_archive) 
-    return not_archive       
+        notArchive_print_list.append(s)
+
+    return notArchive_print_list  
         
