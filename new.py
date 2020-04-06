@@ -8,16 +8,21 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from letter import record_in_database,read_from_datebase
+from letter import record_in_database,read_from_datebase,delete_from_database,today_date
 
 
 class Ui_MainWindow(object):
 
     def fill_tabel(self):
         tabel_list=read_from_datebase()
-
+        match_row=[]
         self.tableWidget.setRowCount(0)
         for row_id , row_data in enumerate(tabel_list):
+            
+            match_row=row_data
+            # print(match_row)
+
+
             self.tableWidget.insertRow(row_id)
             row_data=tabel_list[row_id]
             for column_id , column_data in enumerate(row_data) :
@@ -25,11 +30,14 @@ class Ui_MainWindow(object):
                    
                 #     column_data=int(column_data)
                 self.tableWidget.setItem(row_id,column_id,QtWidgets.QTableWidgetItem(str(column_data)))
-    
+
+                if match_row[2] == row_data[3]:
+            
+                    self.tableWidget.item(row_id,column_id).setBackground(QtGui.QColor(255, 55, 5))
 
 
-
-
+             
+ 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(891, 600)
@@ -44,6 +52,10 @@ class Ui_MainWindow(object):
         self.tableWidget.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.tableWidget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        
+
+    
+
         self.tableWidget.setRowCount(3)
         self.tableWidget.setColumnCount(6)
         self.tableWidget.setObjectName("tableWidget")
@@ -72,6 +84,11 @@ class Ui_MainWindow(object):
         brush.setStyle(QtCore.Qt.SolidPattern)
         item.setForeground(brush)
         self.tableWidget.setItem(0, 1, item)
+
+        #just resize end coulumn
+        header=self.tableWidget.horizontalHeader()
+        header.setSectionResizeMode(5, QtWidgets.QHeaderView.Stretch)
+
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(60, 10, 781, 161))
         self.groupBox.setLayoutDirection(QtCore.Qt.RightToLeft)
@@ -140,7 +157,7 @@ class Ui_MainWindow(object):
         self.groupBox_2.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.groupBox_2.setObjectName("groupBox_2")
         self.label_7 = QtWidgets.QLabel(self.groupBox_2)
-        self.label_7.setGeometry(QtCore.QRect(340, 19, 61, 41))
+        self.label_7.setGeometry(QtCore.QRect(340, 19, 71, 41))
         self.label_7.setObjectName("label_7")
         self.lineEdit_5 = QtWidgets.QLineEdit(self.groupBox_2)
         self.lineEdit_5.setGeometry(QtCore.QRect(130, 30, 191, 20))
@@ -180,9 +197,19 @@ class Ui_MainWindow(object):
         self.fill_tabel()
         self.pushButton.clicked.connect(self.record)
         self.lineEdit.returnPressed.connect(self.record)
-        self.pushButton_2.clicked.connect(self.fill_tabel)
+        self.pushButton_2.clicked.connect(self.delete)
+        self.label_9.setText(today_date)
+       
 
-   
+    
+
+    def delete(self):
+        name=self.lineEdit_5.text()
+        self.lineEdit_5.clear()
+        delete_from_database(name)
+        print('deleted')
+        self.fill_tabel()
+
 
     def record(self):
         name=self.lineEdit.text()
@@ -234,7 +261,7 @@ class Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "تاریخ امروز :"))
         self.label_9.setText(_translate("MainWindow", "TextLabel"))
         self.menuabout.setTitle(_translate("MainWindow", "about"))
-        self.actioncreator.setText(_translate("MainWindow", "creator"))
+        self.actioncreator.setText(_translate("MainWindow", "تهیه کننده کاظم قناتی"))
 
 
 if __name__ == "__main__":
