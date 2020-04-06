@@ -4,37 +4,51 @@ import jdatetime
 
 conn=sqlite3.connect('letters_database')
 curser=conn.cursor()
+
+    
 curser.execute('''CREATE TABLE IF NOT EXISTS main (
     id integer PRIMARY KEY,
     name TEXT NOT NULL ,
-    receiver TEXT NOT NULL,
-    moment TEXT NOT NULL,
-    archive BLOB DEFAULT False
+    letter_date TEXT  ,
+    moment TEXT  ,
+    deadline TEXT,
+    receiver TEXT,
+    description TEXT  
+    
  
 )''')
-def get_data(name,receiver):
 
-    moment=datetime.now().strftime('%Y-%m-%d    %H:%M')
-    if receiver == 'بایگانی':
-        curser.execute('INSERT INTO main (name,receiver,moment,archive)  VALUES (?,?,?,?)'    ,(name,receiver,moment,True)    )
-        conn.commit()
-        
-    else :
-        curser.execute('INSERT INTO main (name,receiver,moment)  VALUES (?,?,?)'  ,(name,receiver,moment)   )
-        conn.commit()    
-        
+def record_in_database(name,letter_date,deadline,receiver,description):
+
+   
+    moment=jdatetime.date.today()
+
+    
+    timeout=(moment+jdatetime.timedelta(days=deadline)).strftime('%Y/%m/%d')
+    moment=moment.strftime('%Y/%m/%d')
+    data_tupel=(name,letter_date,moment,timeout,receiver,description)
+ 
+   
+    curser.execute('INSERT INTO main (name,letter_date,moment,deadline,receiver,description)  VALUES (?,?,?,?,?,?)' ,data_tupel)
+    conn.commit()
+               
 
 
-def letters():
+def read_from_datebase():
     letters_list=[]
     curser.execute('SELECT * FROM main')
     rows=curser.fetchall()
     for row in rows:
         #print (row)
-        letters_list.append(row[1])
-    
-    letters_list=list(dict.fromkeys(letters_list))   
+        row=list(row)
+        letters_list.append(row[1:])
+ 
     return letters_list
+
+def delete_from_database(name):
+    curser.execute('DELETE  FROM 'main' WHERE name = name; ')
+    
+
 
 
 def letter_trace(name):
