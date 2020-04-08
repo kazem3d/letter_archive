@@ -38,7 +38,11 @@ class Ui_MainWindow(object):
                 Y=int((row_data[3].split('/'))[0])
                 d2=jdatetime.date(Y,M,D)
              
-                if d1 >= d2:
+                if d1 == d2:
+                    self.tableWidget.item(row_id,column_id).setBackground(QtGui.QColor(102, 255, 51))
+
+
+                elif d1 > d2:
             
                     self.tableWidget.item(row_id,column_id).setBackground(QtGui.QColor(255, 55, 5))
 
@@ -206,16 +210,26 @@ class Ui_MainWindow(object):
         self.lineEdit.returnPressed.connect(self.record)
         self.pushButton_2.clicked.connect(self.delete)
         self.label_9.setText(today_date)
-       
-
-    
+        self.tableWidget.cellDoubleClicked.connect(self.delete)
 
     def delete(self):
-        name=self.lineEdit_5.text()
-        self.lineEdit_5.clear()
+        row = self.tableWidget.currentRow()
+        # column = self.tableWidget.currentColumn()
+        self.item = self.tableWidget.item(row, 0) 
+        name = self.item.text() 
         delete_from_database(name)
-        print('deleted')
+        print('deleted %s' %name)
         self.fill_tabel()
+        # self.label_9.setText('نامه شماره %s حذف شد' %name)
+
+   
+
+    # def delete(self):
+    #     name=self.lineEdit_5.text()
+    #     self.lineEdit_5.clear()
+    #     delete_from_database(name)
+    #     print('deleted')
+    #     self.fill_tabel()
 
 
     def record(self):
