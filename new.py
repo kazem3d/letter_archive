@@ -9,7 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from letter import record_in_database,read_from_datebase,delete_from_database,today_date
-
+import jdatetime
 
 class Ui_MainWindow(object):
 
@@ -31,7 +31,14 @@ class Ui_MainWindow(object):
                 #     column_data=int(column_data)
                 self.tableWidget.setItem(row_id,column_id,QtWidgets.QTableWidgetItem(str(column_data)))
 
-                if match_row[2] == row_data[3]:
+
+                d1=jdatetime.date.today()
+                D=int((row_data[3].split('/'))[2])
+                M=int((row_data[3].split('/'))[1])
+                Y=int((row_data[3].split('/'))[0])
+                d2=jdatetime.date(Y,M,D)
+             
+                if d1 >= d2:
             
                     self.tableWidget.item(row_id,column_id).setBackground(QtGui.QColor(255, 55, 5))
 
